@@ -3,7 +3,7 @@ import { deleteData, getData, postData } from '../../api';
 
 const wishlistSlice = createSlice({
 	name: 'wishlist',
-	initialState: { isLoading: true, isError: false, data: [] },
+	initialState: { isLoading: false, isError: false, data: [] },
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
