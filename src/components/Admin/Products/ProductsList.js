@@ -18,21 +18,21 @@ import notificationSlice from '../../Notification/NotificationSlice';
 
 const perPage = 10;
 
-const ProductsList = ({ title, url }) => {
+const ProductsList = ({ title, url, cate }) => {
 	const dispatch = useDispatch();
 	const {
 		data: productList,
 		error,
 		isLoading,
 		mutate,
-	} = useSWR('/products/' + url, getData);
+	} = useSWR('/products?category=' + cate, getData);
 
 	const [data, setData] = useState(productList);
 
 	//pagination
 	const [active, setActive] = useState(1);
 	const lengthOfPage = Math.ceil(data?.length / perPage);
-	useEffect(() => setActive(1), [url]);
+	useEffect(() => setActive(1), [cate]);
 	const next = () => {
 		if (active === lengthOfPage) return;
 		setActive(active + 1);
@@ -85,7 +85,7 @@ const ProductsList = ({ title, url }) => {
 
 	const handleDeleteProduct = () => {
 		toggleDeleteDialog();
-		deleteData('products/' + url + '/' + infoDelete.id, {
+		deleteData('products/' + infoDelete.id, {
 			headers: { Authorization: 'Bearer ' + token },
 		})
 			.then((res) => {

@@ -262,6 +262,7 @@ const SignUpDialog = ({ open, handler }) => {
 			pass: e.target.value,
 		});
 		setIsValidPass(e.target.value !== '');
+		setIsValidRePass(e.target.value === inputValue.rePass);
 	};
 
 	const handleCheckRePass = (e) => {

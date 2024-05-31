@@ -14,29 +14,30 @@ import { getData } from '../../../api';
 import SWRconfig from '../../../api/SWRconfig';
 
 export function SearchProductCard({ data }) {
+	console.log(data);
 	const path =
-		data.productType === 'Laptop'
+		data.category === 'Laptop'
 			? 'laptops'
-			: data.productType === 'SmartPhone'
+			: data.category === 'SmartPhone'
 			? 'smartPhones'
-			: data.productType === 'Tablet'
+			: data.category === 'Tablet'
 			? 'tablets'
-			: data.productType === 'SmartWatch'
+			: data.category === 'SmartWatch'
 			? 'smartWatches'
-			: data.productType === 'Charger'
+			: data.category === 'Charger'
 			? 'chargers'
-			: data.productType === 'Cable'
+			: data.category === 'Cable'
 			? 'cables'
-			: data.productType === 'Headphone'
+			: data.category === 'Headphone'
 			? 'headphones'
-			: data.productType === 'Keyboard'
+			: data.category === 'Keyboard'
 			? 'keyboards'
-			: data.productType === 'Mouse'
+			: data.category === 'Mouse'
 			? 'mouses'
 			: '';
 
 	const { data: productData, error: productError } = useSWR(
-		'products/' + path + '/' + data._id + '/fullInfos',
+		'products/' + data._id + '/fullInfos',
 		getData,
 		SWRconfig
 	);

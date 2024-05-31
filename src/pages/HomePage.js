@@ -178,7 +178,7 @@ const HomePage = () => {
 			</Typography>
 			<div className="w-full grid grid-cols-2 md:grid-cols-5 gap-4 mb-20 min-h-[260px]">
 				<Link to="/chargers" className="w-full h-full">
-					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105 flex flex-col gap-4">
+					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105 transition-all duration-[0.3s] ease-linear flex flex-col gap-4">
 						<img
 							className="w-full object-contain mx-auto flex-1"
 							src={homeProductCharger}
@@ -190,7 +190,7 @@ const HomePage = () => {
 					</div>
 				</Link>
 				<Link to="/cables" className="w-full h-full">
-					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105  flex flex-col gap-4">
+					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105 transition-all duration-[0.3s] ease-linear  flex flex-col gap-4">
 						<img
 							className="w-full object-contain mx-auto flex-1"
 							src={homeProductCable}
@@ -202,7 +202,7 @@ const HomePage = () => {
 					</div>
 				</Link>
 				<Link to="/headphones" className="w-full h-full">
-					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105  flex flex-col gap-4">
+					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105 transition-all duration-[0.3s] ease-linear  flex flex-col gap-4">
 						<img
 							className="w-full object-contain mx-auto flex-1"
 							src={homeProductHeadphone}
@@ -214,7 +214,7 @@ const HomePage = () => {
 					</div>
 				</Link>
 				<Link to="/mouses" className="w-full h-full">
-					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105  flex flex-col gap-4">
+					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105 transition-all duration-[0.3s] ease-linear  flex flex-col gap-4">
 						<img
 							className="w-full object-contain mx-auto flex-1"
 							src={homeProductMouse}
@@ -226,7 +226,7 @@ const HomePage = () => {
 					</div>
 				</Link>
 				<Link to="/keyboards" className="w-full h-full">
-					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105  flex flex-col gap-4">
+					<div className="w-full h-full bg-main rounded-xl p-4 hover:scale-105 transition-all duration-[0.3s] ease-linear  flex flex-col gap-4">
 						<img
 							className="w-full object-contain mx-auto flex-1"
 							src={homeProductKeyboard}

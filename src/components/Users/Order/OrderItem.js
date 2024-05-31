@@ -47,7 +47,7 @@ const OrderItem = ({ data }) => {
 					/>
 					<Link to={data._id}>
 						<Typography className="text-text text-base">
-							{`${data.orderItems[0].product.name} (
+							{`${data.orderItems[0].product.product.name} (
 								${data.orderItems[0].product?.ram ? data.orderItems[0].product.ram + ',' : ''}  
 								${data.orderItems[0].product?.rom ? data.orderItems[0].product.rom + ',' : ''} 
 								${

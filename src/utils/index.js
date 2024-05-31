@@ -6,7 +6,8 @@ export function convertToTwoDigit(number) {
 	}
 }
 export function FormatNumber(number) {
-	const numberString = number.toString();
+	const numberString = (Math.floor(number / 1000) * 1000).toString();
+
 	// Tách phần nguyên và phần thập phân
 	const parts = numberString.split('.');
 	const integerPart = parts[0];

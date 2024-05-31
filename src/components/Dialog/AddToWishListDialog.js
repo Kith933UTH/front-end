@@ -9,7 +9,8 @@ import {
 } from '@material-tailwind/react';
 import notificationSlice from '../Notification/NotificationSlice';
 import Loading from '../Loading/Loading';
-import { postData } from '../../api';
+// import { postData } from '../../api';
+import { addToWishList } from '../WishList/WishListSlice';
 
 const AddToWishListDialog = ({
 	icon,
@@ -29,15 +30,8 @@ const AddToWishListDialog = ({
 	const dispatch = useDispatch();
 	const handleAddToWishList = () => {
 		setLoading(true);
-
-		postData(
-			'/users/' + user.userInfo.id + '/favoriteProducts',
-			{ productId: idProduct },
-			{
-				headers: {
-					Authorization: 'Bearer ' + user.accessToken,
-				},
-			}
+		dispatch(
+			addToWishList({ productId: idProduct, token: user.accessToken })
 		)
 			.then(() => {
 				dispatch(
@@ -59,6 +53,36 @@ const AddToWishListDialog = ({
 				);
 			})
 			.finally(() => setLoading(false));
+
+		// postData(
+		// 	'/favoriteProducts',
+		// 	{ productId: idProduct },
+		// 	{
+		// 		headers: {
+		// 			Authorization: 'Bearer ' + user.accessToken,
+		// 		},
+		// 	}
+		// )
+		// 	.then(() => {
+		// 		dispatch(
+		// 			notificationSlice.actions.showNotification({
+		// 				type: 'success',
+		// 				message: 'Add success',
+		// 			})
+		// 		);
+		// 		if (mutate) mutate();
+
+		// 		handleOpen();
+		// 	})
+		// 	.catch((err) => {
+		// 		dispatch(
+		// 			notificationSlice.actions.showNotification({
+		// 				type: 'error',
+		// 				message: err.response.data.message || 'Error',
+		// 			})
+		// 		);
+		// 	})
+		// 	.finally(() => setLoading(false));
 	};
 
 	return (

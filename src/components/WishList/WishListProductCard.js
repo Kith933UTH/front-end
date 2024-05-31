@@ -5,38 +5,38 @@ import {
 	Typography,
 } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-import RatingBar from '../../RatingBar/RatingBar';
-import { FormatNumber, isTimestampPast } from '../../../utils';
+import RatingBar from '../RatingBar/RatingBar';
+import { FormatNumber, isTimestampPast } from '../../utils';
 import useSWR from 'swr';
-import { getData } from '../../../api';
-import SWRconfig from '../../../api/SWRconfig';
-import RemoveFromWishListDialog from '../../Dialog/RemoveFromWishListDialog';
+import { getData } from '../../api';
+import SWRconfig from '../../api/SWRconfig';
+import RemoveFromWishListDialog from '../Dialog/RemoveFromWishListDialog';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-export function WishListProductCard({ data, mutate }) {
+export function WishListProductCard({ data }) {
 	const path =
-		data.productType === 'Laptop'
+		data.product.category === 'Laptop'
 			? 'laptops'
-			: data.productType === 'SmartPhone'
+			: data.product.category === 'SmartPhone'
 			? 'smartPhones'
-			: data.productType === 'tablet'
+			: data.product.category === 'Tablet'
 			? 'tablets'
-			: data.productType === 'SmartWatch'
+			: data.product.category === 'SmartWatch'
 			? 'smartWatches'
-			: data.productType === 'Charger'
+			: data.product.category === 'Charger'
 			? 'chargers'
-			: data.productType === 'Cable'
+			: data.product.category === 'Cable'
 			? 'cables'
-			: data.productType === 'Headphone'
+			: data.product.category === 'Headphone'
 			? 'headphones'
-			: data.productType === 'Keyboard'
+			: data.product.category === 'Keyboard'
 			? 'keyboards'
-			: data.productType === 'Mouse'
+			: data.product.category === 'Mouse'
 			? 'mouses'
 			: '';
 
 	const { data: productData, error: productError } = useSWR(
-		'products/' + path + '/' + data.product._id + '/fullInfos',
+		'products/' + data.product._id + '/fullInfos',
 		getData,
 		SWRconfig
 	);
@@ -157,7 +157,7 @@ export function WishListProductCard({ data, mutate }) {
 									}
 									idRemove={data._id}
 									productName={data.product.name}
-									mutate={mutate}
+									// mutate={mutate}
 								/>
 							</div>
 						</div>

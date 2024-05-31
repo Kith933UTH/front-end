@@ -135,7 +135,7 @@ const AddToCartDialog = ({ icon, buttonStyle, data }) => {
 						data={data}
 						variant={chooseVariant}
 					>
-						{data?.ram && (
+						{data?.rams && (
 							<OptionList
 								wrapperStyle={
 									'px-4 flex flex-row gap-1 mb-4 flex-wrap'
@@ -147,7 +147,7 @@ const AddToCartDialog = ({ icon, buttonStyle, data }) => {
 								handleChoose={handleChooseRam}
 							/>
 						)}
-						{data?.hardDrive && (
+						{data?.hardDrives && (
 							<OptionList
 								wrapperStyle={
 									'px-4 flex flex-row gap-1 mb-4 flex-wrap'
@@ -164,7 +164,7 @@ const AddToCartDialog = ({ icon, buttonStyle, data }) => {
 								handleChoose={handleChooseHardDrive}
 							/>
 						)}
-						{data?.rom && (
+						{data?.roms && (
 							<OptionList
 								wrapperStyle={
 									'px-4 flex flex-row gap-1 mb-4 flex-wrap'
@@ -181,7 +181,7 @@ const AddToCartDialog = ({ icon, buttonStyle, data }) => {
 								handleChoose={handleChooseHardDrive}
 							/>
 						)}
-						{data?.color && (
+						{data?.colors && (
 							<OptionList
 								wrapperStyle={
 									'px-4 flex flex-row gap-1 mb-4 flex-wrap'

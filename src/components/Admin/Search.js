@@ -34,7 +34,7 @@ const getPath = (value) => {
 
 const Search = ({ searchKey, loading }) => {
 	const token = useSelector((state) => state.users.accessToken);
-	const searchUserFetcher = (url) =>
+	const searchWithTokenFetcher = (url) =>
 		getData(url, {
 			headers: { Authorization: 'Bearer ' + token },
 		});
@@ -43,13 +43,21 @@ const Search = ({ searchKey, loading }) => {
 		data: searchProductData,
 		error: searchProductError,
 		isLoading: searchProductLoading,
-	} = useSWR('/products/list/search?text=' + searchKey, getData, SWRconfig);
+	} = useSWR(
+		'/products/search?text=' + searchKey,
+		searchWithTokenFetcher,
+		SWRconfig
+	);
 
 	const {
 		data: searchUserData,
 		error: searchUserError,
 		isLoading: searchUserLoading,
-	} = useSWR('/users/search?text=' + searchKey, searchUserFetcher, SWRconfig);
+	} = useSWR(
+		'/users/search?text=' + searchKey,
+		searchWithTokenFetcher,
+		SWRconfig
+	);
 
 	return (
 		<div className="absolute top-full -mt-1 bg-white rounded-md w-[550px] max-h-[300px] text-main font-medium shadow-md shadow-gray-300 border-gray-300 border-solid border-[1px]">
@@ -81,7 +89,7 @@ const Search = ({ searchKey, loading }) => {
 										<Link
 											to={
 												'/admin/products/' +
-												getPath(item.productType) +
+												getPath(item.category) +
 												'/' +
 												item._id
 											}

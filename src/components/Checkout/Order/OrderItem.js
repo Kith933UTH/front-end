@@ -57,7 +57,7 @@ const OrderItem = ({ data, user, deleteHandler, isLoading }) => {
 								variant="paragraph"
 								className="uppercase font-medium text-base text-text mb-2 cursor-default hover:underline"
 							>
-								{data.product.name}
+								{data.product.product.name}
 							</Typography>
 							<Typography
 								variant="paragraph"

@@ -1,8 +1,10 @@
 import { Typography } from '@material-tailwind/react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const Complete = () => {
+	const { orderId } = useParams();
+
 	return (
 		<section className="w-full z-10 bg-primary py-[120px] overflow-hidden">
 			<div className="container mx-auto">
@@ -17,6 +19,13 @@ const Complete = () => {
 								We will contact you as soon as possible to
 								confirm your order.
 							</Typography>
+
+							<Typography className="mb-8 text-xl text-white">
+								Your order ID:{' '}
+								<span className="text-highlight">
+									#{orderId}
+								</span>
+							</Typography>
 							<div className="flex gap-4 w-full justify-center">
 								<Link
 									to="/"
@@ -27,7 +36,7 @@ const Complete = () => {
 									</Typography>
 								</Link>
 								<Link
-									to="/user/order"
+									to={'/user/order/' + orderId}
 									className="inline-block rounded-lg border border-white px-8 py-3 text-center text-base font-semibold text-main bg-highlight transition hover:opacity-50"
 								>
 									<Typography className="text-base text-center font-semibold text-main">

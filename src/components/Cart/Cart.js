@@ -101,7 +101,8 @@ const Cart = () => {
 		<>
 			<Badge
 				content={cartQuantity}
-				className="min-w-5 min-h-5 hover:opacity-80"
+				className="min-w-5 min-h-5 hover:opacity-80 cursor-pointer"
+				onClick={openCartSection}
 			>
 				<Tooltip
 					content="Shopping cart"

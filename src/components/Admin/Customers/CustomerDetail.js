@@ -32,6 +32,7 @@ const CustomerDetail = () => {
 		error: orderListError,
 		isLoading: orderListLoading,
 	} = useSWR('/orders?userId=' + customerId, userFetcher, SWRconfig);
+	console.log(orderList);
 
 	return (
 		<AdminWideLayout>
@@ -113,7 +114,7 @@ const CustomerDetail = () => {
 								))}
 							</>
 						) : (
-							<Typography className="text-lg font-medium m-2">
+							<Typography className="text-lg font-medium p-4">
 								No orders yet.
 							</Typography>
 						)}

@@ -22,10 +22,11 @@ const Checkout = () => {
 	const cartList = useSelector((state) => state.cart);
 	const loggedUser = useSelector((state) => state.users);
 
-	const userFetcher = (url) =>
-		getData(url, {
+	const userFetcher = (url) => {
+		return getData(url, {
 			headers: { Authorization: 'Bearer ' + loggedUser.accessToken },
 		});
+	};
 
 	const { data, error, isLoading } = useSWR(
 		'/users/' + loggedUser.userInfo.id,
@@ -67,7 +68,7 @@ const Checkout = () => {
 			{
 				orderItems: cartList.data.map((item) => {
 					return {
-						productVariantId: item.product._id,
+						product: item.product._id,
 						quantity: item.quantity,
 					};
 				}),
@@ -89,7 +90,7 @@ const Checkout = () => {
 					})
 				);
 				setPlaceOrderLoading(false);
-				navigate('complete');
+				navigate(results.data.message);
 			})
 			.catch((error) => {
 				dispatch(

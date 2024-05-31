@@ -56,7 +56,7 @@ const CartItem = ({ data, user, deleteHandler, isLoading }) => {
 				ripple={false}
 			>
 				{/* Cart item image  */}
-				<ListItemPrefix className="bg-transparent">
+				<ListItemPrefix className="bg-transparent cursor-default">
 					<img
 						className="h-20 w-20 rounded-lg object-contain object-center bg-transparent"
 						src={data.product.image.imageUrl}
@@ -72,7 +72,7 @@ const CartItem = ({ data, user, deleteHandler, isLoading }) => {
 								variant="paragraph"
 								className="uppercase font-medium text-sm text-main mb-3 cursor-default hover:underline"
 							>
-								{data.product.name}
+								{data.product.product.name}
 							</Typography>
 							<Typography
 								variant="paragraph"
@@ -98,7 +98,6 @@ const CartItem = ({ data, user, deleteHandler, isLoading }) => {
 								</span>
 							</Typography>
 						</div>
-						{/* Cart item remove button  */}
 						<IconButton
 							variant="text"
 							className="py-0 px-4 w-5 h-5 hover:bg-transparent hover:opacity-80"

@@ -9,14 +9,15 @@ import {
 } from '@material-tailwind/react';
 import notificationSlice from '../Notification/NotificationSlice';
 import Loading from '../Loading/Loading';
-import { deleteData } from '../../api';
+// import { deleteData } from '../../api';
+import { removeFromWishList } from '../WishList/WishListSlice';
 
 const RemoveFromWishListDialog = ({
 	icon,
 	buttonStyle,
 	idRemove,
 	productName,
-	mutate,
+	// mutate,
 }) => {
 	const user = useSelector((state) => state.users);
 	const [loading, setLoading] = useState(false);
@@ -27,16 +28,10 @@ const RemoveFromWishListDialog = ({
 
 	//dispatch
 	const dispatch = useDispatch();
-	const handleAddToWishList = () => {
+	const handleRemoveFromWishList = () => {
 		setLoading(true);
-
-		deleteData(
-			'/users/' + user.userInfo.id + '/favoriteProducts/' + idRemove,
-			{
-				headers: {
-					Authorization: 'Bearer ' + user.accessToken,
-				},
-			}
+		dispatch(
+			removeFromWishList({ idRemove: idRemove, token: user.accessToken })
 		)
 			.then(() => {
 				dispatch(
@@ -45,7 +40,7 @@ const RemoveFromWishListDialog = ({
 						message: 'Remove success',
 					})
 				);
-				if (mutate) mutate();
+				// if (mutate) mutate();
 				handleOpen();
 			})
 			.catch((err) => {
@@ -57,6 +52,31 @@ const RemoveFromWishListDialog = ({
 				);
 			})
 			.finally(() => setLoading(false));
+
+		// deleteData('/favoriteProducts/' + idRemove, {
+		// 	headers: {
+		// 		Authorization: 'Bearer ' + user.accessToken,
+		// 	},
+		// })
+		// 	.then(() => {
+		// 		dispatch(
+		// 			notificationSlice.actions.showNotification({
+		// 				type: 'success',
+		// 				message: 'Remove success',
+		// 			})
+		// 		);
+		// 		// if (mutate) mutate();
+		// 		handleOpen();
+		// 	})
+		// 	.catch((err) => {
+		// 		dispatch(
+		// 			notificationSlice.actions.showNotification({
+		// 				type: 'error',
+		// 				message: err.response.data.message || 'Error',
+		// 			})
+		// 		);
+		// 	})
+		// 	.finally(() => setLoading(false));
 	};
 
 	return (
@@ -90,7 +110,7 @@ const RemoveFromWishListDialog = ({
 						className={`bg-red-700 py-3 rounded-xl border-[0px] text-text shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 ${
 							loading ? 'pointer-events-none opacity-60 p-0' : ''
 						}`}
-						onClick={handleAddToWishList}
+						onClick={handleRemoveFromWishList}
 					>
 						{loading ? (
 							<Loading

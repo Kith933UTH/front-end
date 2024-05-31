@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { HomeIcon } from '@heroicons/react/24/outline';
 import ProductList from '../Products/ProductList';
 
-const Category = ({ type }) => {
+const Category = ({ type, cate }) => {
 	const [isMobile, setIsMobile] = useState(window.innerWidth <= 960);
 	window.onresize = () => {
 		if (window.innerWidth <= 960) setIsMobile(true);
@@ -47,7 +47,7 @@ const Category = ({ type }) => {
 						</div>
 					)}
 					<div className="w-full tablet:w-5/6">
-						<ProductList type={type.path} />
+						<ProductList type={type.path} cate={cate} />
 					</div>
 				</div>
 			</div>

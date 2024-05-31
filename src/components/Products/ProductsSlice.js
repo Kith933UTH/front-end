@@ -74,7 +74,7 @@ const productsSlice = createSlice({
 export const fetchProducts = createAsyncThunk(
 	'products/fetchProducts',
 	async (type) => {
-		const data = await getData('products/list/' + type);
+		const data = await getData('products/list?category=' + type);
 		return data;
 	}
 );

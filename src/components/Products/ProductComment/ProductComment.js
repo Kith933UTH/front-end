@@ -30,7 +30,7 @@ const ProductComment = ({ commentData, productId, token, mutate }) => {
 				dispatch(
 					notificationSlice.actions.showNotification({
 						type: 'success',
-						message: 'Add review success',
+						message: 'Add comment success',
 					})
 				);
 				mutate();

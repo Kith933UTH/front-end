@@ -33,6 +33,9 @@ const usersSlice = createSlice({
 				state.accessToken = '';
 				state.userInfo = {};
 			})
+			// .addCase(refreshToken.pending, (state, action) => {
+			// 	state.isRefresh = true;
+			// })
 			.addCase(refreshToken.fulfilled, (state, action) => {
 				state.accessToken = action.payload.accessToken;
 				state.userInfo = jwtDecode(action.payload.accessToken).UserInfo;

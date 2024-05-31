@@ -31,21 +31,13 @@ const ProductDetail = ({ id, cateName, catePath }) => {
 		data: productData,
 		error: productError,
 		isLoading: productLoading,
-	} = useSWR(
-		'products/' + catePath + '/' + id + '/fullInfos',
-		getData,
-		SWRconfig
-	);
+	} = useSWR('products/' + id + '/fullInfos', getData, SWRconfig);
 
 	const {
 		data: detailData,
 		error: detailError,
 		isLoading: detailLoading,
-	} = useSWR(
-		'products/' + catePath + '/' + id + '/details',
-		getData,
-		SWRconfig
-	);
+	} = useSWR('products/' + id + '/details', getData, SWRconfig);
 
 	const {
 		data: reviewData,
@@ -67,47 +59,6 @@ const ProductDetail = ({ id, cateName, catePath }) => {
 		isLoading: commentLoading,
 		mutate: commentMutate,
 	} = useSWR('/comments?productId=' + id, getData, SWRconfig);
-	// 	{
-	// 		userName: 'Phuoc',
-	// 		comment:
-	// 			"I've been using this product for over a month and it's still good",
-	// 		time: '04/04/2024',
-	// 		reply: [
-	// 			{
-	// 				userName: 'QTV',
-	// 				comment:
-	// 					"I've been using this product for over a month and it's still good",
-	// 				time: '04/04/2024',
-	// 			},
-	// 			{
-	// 				userName: 'Phuoc',
-	// 				comment:
-	// 					"I've been using this product for over a month and it's still good",
-	// 				time: '04/04/2024',
-	// 			},
-	// 		],
-	// 	},
-	// 	{
-	// 		userName: 'Kith',
-	// 		comment:
-	// 			"I've been using this product for over a month and it's still good",
-	// 		time: '04/04/2024',
-	// 		reply: [
-	// 			{
-	// 				userName: 'QTV',
-	// 				comment:
-	// 					"I've been using this product for over a month and it's still good",
-	// 				time: '04/04/2024',
-	// 			},
-	// 			{
-	// 				userName: 'Kith',
-	// 				comment:
-	// 					"I've been using this product for over a month and it's still good",
-	// 				time: '04/04/2024',
-	// 			},
-	// 		],
-	// 	},
-	// ];
 
 	return (
 		<>

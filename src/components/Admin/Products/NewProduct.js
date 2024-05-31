@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import notificationSlice from '../../Notification/NotificationSlice';
 import Loading from '../../Loading/Loading';
 
-const NewProduct = ({ title, url }) => {
+const NewProduct = ({ title, cate }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const token = useSelector((state) => state.users.accessToken);
@@ -19,8 +19,8 @@ const NewProduct = ({ title, url }) => {
 		e.preventDefault();
 		setLoading(true);
 		postData(
-			'products/' + url,
-			{ name: inputValue.name, brand: inputValue.brand },
+			'products',
+			{ name: inputValue.name, brand: inputValue.brand, category: cate },
 			{
 				headers: { Authorization: 'Bearer ' + token },
 			}

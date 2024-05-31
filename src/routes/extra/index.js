@@ -18,7 +18,7 @@ const ExtraRoute = [
 				element: <Checkout />,
 			},
 			{
-				path: 'complete',
+				path: ':orderId',
 				element: <Complete />,
 			},
 		],

@@ -72,7 +72,7 @@ const AddAddressDialog = ({ open, handler }) => {
 		district: { name: '' },
 		commune: { name: '' },
 		street: '',
-		defaultAddress: false,
+		defaultAddress: true,
 	});
 	const [isValidStreet, setIsValidStreet] = useState(true);
 

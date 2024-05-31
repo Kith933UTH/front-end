@@ -64,7 +64,7 @@ const AddAddressDialog = ({ open, handler, data, token, mutate }) => {
 		district: { name: '' },
 		commune: { name: '' },
 		street: '',
-		defaultAddress: false,
+		defaultAddress: true,
 	});
 	const [isValidStreet, setIsValidStreet] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -587,7 +587,7 @@ const AddressItem = ({ address, data, token, mutate }) => {
 								if (i === index) {
 									return {
 										address: newAddress,
-										defaultAddress: false,
+										defaultAddress: item.defaultAddress,
 									};
 								} else {
 									return item;

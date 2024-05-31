@@ -44,7 +44,7 @@ const GeneralData = ({ data, productId, mutate }) => {
 		e.preventDefault();
 		setLoading(true);
 		updateData(
-			'products/chargers/' + productId,
+			'products/' + productId,
 			{ name: inputValue.name, brand: inputValue.brand },
 			{
 				headers: {
@@ -184,7 +184,7 @@ const DetailData = ({ data, productId, mutate }) => {
 		setLoading(true);
 		if (!data) {
 			postData(
-				'products/chargers/' + productId + '/details',
+				'products/' + productId + '/details',
 				{
 					guaranteePeriod: 10,
 					includedAccessories: [
@@ -220,7 +220,7 @@ const DetailData = ({ data, productId, mutate }) => {
 				.finally(() => setLoading(false));
 		} else {
 			updateData(
-				'products/chargers/' + productId + '/details/' + data._id,
+				'products/' + productId + '/details/' + data._id,
 				{
 					guaranteePeriod: 10,
 					includedAccessories: [
@@ -299,11 +299,13 @@ const VariantItem = ({ data, productId, mutate }) => {
 	const token = useSelector((state) => state.users.accessToken);
 	const [inputValue, setInputValue] = useState({
 		price: data.price,
+		color: data.color,
 		discount: {
 			discountPercentage: data.discount.discountPercentage,
 			discountEndDate: data.discount.discountEndDate,
 		},
 		status: data.status,
+		quantity: data.quantity,
 		image: null,
 	});
 	const [updateLoading, setUpdateLoading] = useState(false);
@@ -333,6 +335,7 @@ const VariantItem = ({ data, productId, mutate }) => {
 		setUpdateLoading(true);
 		const formData = new FormData();
 		formData.append('price', inputValue.price);
+		formData.append('color', inputValue.color);
 		if (inputValue.discount.discountPercentage === 0) {
 			formData.append(
 				'discount',
@@ -341,12 +344,12 @@ const VariantItem = ({ data, productId, mutate }) => {
 		} else {
 			formData.append('discount', JSON.stringify(inputValue.discount));
 		}
-
+		formData.append('quantity', inputValue.quantity);
 		formData.append('status', inputValue.status);
 		formData.append('image', inputValue.image);
 
 		patchFormData(
-			'products/chargers/' + productId + '/variants/' + data._id,
+			'products/' + productId + '/variants/' + data._id,
 			formData,
 			{
 				headers: {
@@ -378,7 +381,7 @@ const VariantItem = ({ data, productId, mutate }) => {
 	const handleDeleteVariant = (e) => {
 		e.preventDefault();
 		setDeleteLoading(true);
-		deleteData('products/chargers/' + productId + '/variants/' + data._id, {
+		deleteData('products/' + productId + '/variants/' + data._id, {
 			headers: { Authorization: 'Bearer ' + token },
 		})
 			.then((res) => {
@@ -464,10 +467,17 @@ const VariantItem = ({ data, productId, mutate }) => {
 					<input
 						type="text"
 						placeholder="Color"
-						value={data?.color}
-						disabled
+						value={inputValue.color}
 						spellCheck="false"
-						className="cursor-not-allowed h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
+						onChange={(e) =>
+							setInputValue({
+								...inputValue,
+								color: e.target.value,
+							})
+						}
+						className={` ${
+							inputValue.color === '' ? '!border-red-600' : ''
+						} h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin`}
 					></input>
 				</div>
 
@@ -536,10 +546,15 @@ const VariantItem = ({ data, productId, mutate }) => {
 						type="number"
 						min={1}
 						placeholder="Quantity"
-						value={data?.quantity}
-						disabled
+						value={inputValue.quantity}
 						spellCheck="false"
-						className="cursor-not-allowed h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
+						onChange={(e) =>
+							setInputValue({
+								...inputValue,
+								quantity: e.target.value,
+							})
+						}
+						className="h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
 					></input>
 				</div>
 				{/* active */}
@@ -652,16 +667,12 @@ const AddVariant = ({ productId, mutate }) => {
 		formData.append('quantity', inputValue.quantity);
 		formData.append('image', inputValue.image);
 
-		postFormData(
-			'products/chargers/' + productId + '/variants/',
-			formData,
-			{
-				headers: {
-					Authorization: 'Bearer ' + token,
-					'Content-Type': 'multipart/form-data;',
-				},
-			}
-		)
+		postFormData('products/' + productId + '/variants/', formData, {
+			headers: {
+				Authorization: 'Bearer ' + token,
+				'Content-Type': 'multipart/form-data;',
+			},
+		})
 			.then((res) => {
 				dispatch(
 					notificationSlice.actions.showNotification({
@@ -925,7 +936,7 @@ const HighLightImages = ({ data, productId, detailId, mutate }) => {
 			});
 
 			patchFormData(
-				'products/chargers/' +
+				'products/' +
 					productId +
 					'/details/' +
 					detailId +
@@ -963,7 +974,7 @@ const HighLightImages = ({ data, productId, detailId, mutate }) => {
 			});
 
 			postFormData(
-				'products/chargers/' +
+				'products/' +
 					productId +
 					'/details/' +
 					detailId +
@@ -1099,19 +1110,19 @@ const EditCharger = () => {
 	const navigate = useNavigate();
 
 	const { data, mutate } = useSWR(
-		'products/chargers/' + productId,
+		'products/' + productId,
 		getData,
 		SWRconfig
 	);
 
 	const { data: variantList, mutate: mutateVariantList } = useSWR(
-		'products/chargers/' + productId + '/variants',
+		'products/' + productId + '/variants',
 		getData,
 		SWRconfig
 	);
 
 	const { data: detailInfo, mutate: mutateDetailData } = useSWR(
-		'products/chargers/' + productId + '/details',
+		'products/' + productId + '/details',
 		getData,
 		SWRconfig
 	);

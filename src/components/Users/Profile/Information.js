@@ -5,15 +5,17 @@ import {
 	CardBody,
 	Button,
 	IconButton,
+	CardFooter,
 	// Radio,
 } from '@material-tailwind/react';
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { LockClosedIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import { updateData } from '../../../api';
 import { useDispatch } from 'react-redux';
 import notificationSlice from '../../Notification/NotificationSlice';
-import usersSlice from '../UsersSlice';
+import usersSlice, { logOut } from '../UsersSlice';
 import Loading from '../../Loading/Loading';
+import { useNavigate } from 'react-router-dom';
 
 const phoneNumberRegex = /^0\d{9}$/;
 const emailRegex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
@@ -268,9 +270,269 @@ const EditProfileDialog = ({ open, handler, data, token, mutate }) => {
 	);
 };
 
+const ChangePasswordDialog = ({ open, handler, handler2, token, data }) => {
+	const dispatch = useDispatch();
+	const [isValidOldPass, setIsValidOldPass] = useState(true);
+	const [isValidNewPass, setIsValidNewPass] = useState(true);
+	const [isValidRePass, setIsValidRePass] = useState(true);
+	const [loading, setLoading] = useState(false);
+
+	const [inputValue, setInputValue] = useState({
+		oldPass: '',
+		newPass: '',
+		rePass: '',
+	});
+	const handleCheckOldPass = (e) => {
+		setInputValue({
+			...inputValue,
+			oldPass: e.target.value,
+		});
+		setIsValidOldPass(e.target.value !== '');
+	};
+	const handleCheckNewPass = (e) => {
+		setInputValue({
+			...inputValue,
+			newPass: e.target.value,
+		});
+		setIsValidNewPass(e.target.value !== '');
+		setIsValidRePass(e.target.value === inputValue.rePass);
+	};
+
+	const handleCheckRePass = (e) => {
+		setInputValue({
+			...inputValue,
+			rePass: e.target.value,
+		});
+		setIsValidRePass(
+			e.target.value !== '' && e.target.value === inputValue.newPass
+		);
+	};
+
+	const handleSubmitChangePassword = (e) => {
+		e.preventDefault();
+		setLoading(true);
+		updateData(
+			'auth/changePassword',
+			{
+				email: data.email,
+				oldPassword: inputValue.oldPass,
+				newPassword: inputValue.newPass,
+			},
+			{
+				headers: {
+					Authorization: 'Bearer ' + token,
+				},
+			}
+		)
+			.then((results) => {
+				// dispatch(
+				// 	notificationSlice.actions.showNotification({
+				// 		type: 'success',
+				// 		message: 'Updated success',
+				// 	})
+				// );
+				handler();
+				handler2();
+				// dispatch(refreshToken());
+			})
+			.catch((error) => {
+				dispatch(
+					notificationSlice.actions.showNotification({
+						type: 'error',
+						message: error?.response.data.message || 'Error',
+					})
+				);
+			})
+			.finally(() => setLoading(false));
+	};
+
+	return (
+		<>
+			<IconButton variant="text" color="light-green" onClick={handler}>
+				<LockClosedIcon className="text-highlight h-6 w-6" />
+			</IconButton>
+			<Dialog
+				size="xs"
+				open={open}
+				handler={handler}
+				className="shadow-md shadow-gray-700 bg-main *:selection:text-gray-900 *:selection:bg-highlight"
+			>
+				<Card className="mx-auto w-full bg-main text-text p-4">
+					<CardBody className="flex flex-col py-0">
+						<Typography
+							variant="h4"
+							className="text-highlight mt-6 mb-2"
+						>
+							Change Password
+						</Typography>
+						<form className="flex flex-col">
+							{/* oldPass  */}
+							<input
+								name="password"
+								type="password"
+								required={true}
+								className={`rounded-lg mt-6 text-text font-medium p-2 w-full bg-transparent border-solid border-[1px] border-gray-700 focus:outline-none ${
+									inputValue.oldPass !== '' &&
+									'border-highlight'
+								} ${
+									!isValidOldPass &&
+									'border-red-700 selection:bg-red-700 placeholder:text-red-700 !text-red-700'
+								}`}
+								placeholder="Current password"
+								spellCheck="false"
+								value={inputValue.oldPass}
+								onChange={handleCheckOldPass}
+							/>
+
+							{!isValidOldPass && (
+								<Typography className="text-sm text-red-600 font-medium mt-1">
+									Please type current password
+								</Typography>
+							)}
+
+							{/* newPass  */}
+							<input
+								name="password"
+								type="password"
+								required={true}
+								className={`rounded-lg mt-6 text-text font-medium p-2 w-full bg-transparent border-solid border-[1px] border-gray-700 focus:outline-none ${
+									inputValue.newPass !== '' &&
+									'border-highlight'
+								} ${
+									!isValidNewPass &&
+									'border-red-700 selection:bg-red-700 placeholder:text-red-700 !text-red-700'
+								}`}
+								placeholder="New password"
+								spellCheck="false"
+								value={inputValue.newPass}
+								onChange={handleCheckNewPass}
+							/>
+
+							{!isValidNewPass && (
+								<Typography className="text-sm text-red-600 font-medium mt-1">
+									Please type new password
+								</Typography>
+							)}
+
+							{/* repass */}
+							<input
+								name="rePass"
+								type="password"
+								required={true}
+								className={`rounded-lg mt-6 text-text font-medium p-2 w-full bg-transparent border-solid border-[1px] border-gray-700 focus:outline-none ${
+									inputValue.rePass !== '' &&
+									'border-highlight'
+								} ${
+									!isValidRePass &&
+									'border-red-700 selection:bg-red-700 placeholder:text-red-700 !text-red-700'
+								}`}
+								placeholder="Confirm password"
+								spellCheck="false"
+								value={inputValue.rePass}
+								onChange={handleCheckRePass}
+							/>
+
+							{!isValidRePass && (
+								<Typography className="text-sm text-red-600 font-medium mt-1">
+									Don't match to new password
+								</Typography>
+							)}
+
+							<div className="flex gap-4 mt-6 justify-end">
+								<Button
+									variant="text"
+									color="red"
+									onClick={handler}
+									className=""
+								>
+									<span>Cancel</span>
+								</Button>
+								<Button
+									onClick={handleSubmitChangePassword}
+									type="submit"
+									className={`bg-highlight px-4 py-2 text-main flex justify-center items-center gap-2 pointer-events-none hover:opacity-50 opacity-50 ${
+										isValidNewPass &&
+										isValidOldPass &&
+										isValidRePass &&
+										inputValue.oldPass !== '' &&
+										inputValue.newPass !== '' &&
+										inputValue.rePass !== '' &&
+										'pointer-events-auto opacity-100'
+									} `}
+								>
+									{loading ? (
+										<Loading
+											customStyle={'!min-h-6 !w-8 !p-0'}
+											sizeStyle={'h-4 w-4'}
+										/>
+									) : (
+										<span>Save</span>
+									)}
+								</Button>
+							</div>
+						</form>
+					</CardBody>
+				</Card>
+			</Dialog>
+		</>
+	);
+};
+
+const ChangePasswordSuccessDialog = ({ open, handler }) => {
+	return (
+		<Dialog
+			size="xs"
+			open={open}
+			handler={handler}
+			className="shadow-md shadow-gray-700 bg-main *:selection:text-gray-900 *:selection:bg-highlight"
+		>
+			<Card className="mx-auto w-full bg-main text-text py-4">
+				<CardBody className="flex flex-col py-0">
+					<Typography
+						variant="h4"
+						className="text-highlight mt-6 mb-2 text-center"
+					>
+						Password Have Changed
+					</Typography>
+					<Typography className="text-text text-xl text-center mb-2">
+						Please log in again.
+					</Typography>
+				</CardBody>
+				<CardFooter className="flex justify-center">
+					<Button
+						onClick={handler}
+						type="submit"
+						className={`bg-highlight px-4 py-2 text-main text-base flex justify-center items-center gap-2 hover:opacity-50`}
+					>
+						<span>Ok</span>
+					</Button>
+				</CardFooter>
+			</Card>
+		</Dialog>
+	);
+};
+
 const Information = ({ data, token, mutate }) => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [openEdit, setOpenEdit] = useState(false);
+	const [openChangePassword, setOpenChangePassword] = useState(false);
+	const [openReLogin, setOpenReLogin] = useState(false);
 	const handleOpen = () => setOpenEdit(!openEdit);
+	const handleOpenChangePassword = () => {
+		setOpenChangePassword(!openChangePassword);
+	};
+
+	const handleOpenReLogin = () => {
+		setOpenReLogin(!openReLogin);
+	};
+
+	const handleReLogin = () => {
+		setOpenReLogin(!openReLogin);
+		dispatch(logOut());
+		navigate('/');
+		dispatch(usersSlice.actions.setLoginDialog(true));
+	};
 	return (
 		<div className="w-full bg-main rounded-md p-4">
 			<Typography className="text-text text-base font-semibold uppercase mb-2">
@@ -296,13 +558,26 @@ const Information = ({ data, token, mutate }) => {
 						<span className="text-highlight">{data.email}</span>
 					</Typography>
 				</div>
-				<EditProfileDialog
-					open={openEdit}
-					handler={handleOpen}
-					data={data}
-					token={token}
-					mutate={mutate}
-				/>
+				<div className="flex flex-col">
+					<ChangePasswordDialog
+						open={openChangePassword}
+						handler={handleOpenChangePassword}
+						handler2={handleOpenReLogin}
+						token={token}
+						data={data}
+					/>
+					<EditProfileDialog
+						open={openEdit}
+						handler={handleOpen}
+						data={data}
+						token={token}
+						mutate={mutate}
+					/>
+					<ChangePasswordSuccessDialog
+						open={openReLogin}
+						handler={handleReLogin}
+					/>
+				</div>
 			</div>
 		</div>
 	);

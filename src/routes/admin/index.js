@@ -52,13 +52,21 @@ const AdminRoute = [
 					{
 						index: true,
 						element: (
-							<ProductsList title={'Laptop'} url={'laptops'} />
+							<ProductsList
+								title={'Laptop'}
+								url={'laptops'}
+								cate={'Laptop'}
+							/>
 						),
 					},
 					{
 						path: 'new',
 						element: (
-							<NewProduct title={'Laptop'} url={'laptops'} />
+							<NewProduct
+								title={'Laptop'}
+								url={'laptops'}
+								cate={'Laptop'}
+							/>
 						),
 					},
 					// {
@@ -77,6 +85,7 @@ const AdminRoute = [
 							<ProductsList
 								title={'Smartphones'}
 								url={'smartPhones'}
+								cate={'SmartPhone'}
 							/>
 						),
 					},
@@ -86,6 +95,7 @@ const AdminRoute = [
 							<NewProduct
 								title={'Smartphones'}
 								url={'smartPhones'}
+								cate={'SmartPhone'}
 							/>
 						),
 					},
@@ -103,13 +113,21 @@ const AdminRoute = [
 					{
 						index: true,
 						element: (
-							<ProductsList title={'Tablet'} url={'tablets'} />
+							<ProductsList
+								title={'Tablet'}
+								url={'tablets'}
+								cate={'Tablet'}
+							/>
 						),
 					},
 					{
 						path: 'new',
 						element: (
-							<NewProduct title={'Tablet'} url={'tablets'} />
+							<NewProduct
+								title={'Tablet'}
+								url={'tablets'}
+								cate={'Tablet'}
+							/>
 						),
 					},
 					// {
@@ -129,6 +147,7 @@ const AdminRoute = [
 							<ProductsList
 								title={'Smartwatch'}
 								url={'smartwatches'}
+								cate={'SmartWatch'}
 							/>
 						),
 					},
@@ -138,6 +157,7 @@ const AdminRoute = [
 							<NewProduct
 								title={'Smartwatch'}
 								url={'smartwatches'}
+								cate={'SmartWatch'}
 							/>
 						),
 					},
@@ -158,13 +178,21 @@ const AdminRoute = [
 					{
 						index: true,
 						element: (
-							<ProductsList title={'Charger'} url={'chargers'} />
+							<ProductsList
+								title={'Charger'}
+								url={'chargers'}
+								cate={'Charger'}
+							/>
 						),
 					},
 					{
 						path: 'new',
 						element: (
-							<NewProduct title={'Charger'} url={'chargers'} />
+							<NewProduct
+								title={'Charger'}
+								url={'chargers'}
+								cate={'Charger'}
+							/>
 						),
 					},
 					// {
@@ -181,12 +209,22 @@ const AdminRoute = [
 					{
 						index: true,
 						element: (
-							<ProductsList title={'Cable'} url={'cables'} />
+							<ProductsList
+								title={'Cable'}
+								url={'cables'}
+								cate={'Cable'}
+							/>
 						),
 					},
 					{
 						path: 'new',
-						element: <NewProduct title={'Cable'} url={'cables'} />,
+						element: (
+							<NewProduct
+								title={'Cable'}
+								url={'cables'}
+								cate={'Cable'}
+							/>
+						),
 					},
 					// {
 					// 	path: 'attributes',
@@ -205,6 +243,7 @@ const AdminRoute = [
 							<ProductsList
 								title={'Headphone'}
 								url={'headphones'}
+								cate={'Headphone'}
 							/>
 						),
 					},
@@ -214,6 +253,7 @@ const AdminRoute = [
 							<NewProduct
 								title={'Headphone'}
 								url={'headphones'}
+								cate={'Headphone'}
 							/>
 						),
 					},
@@ -234,12 +274,22 @@ const AdminRoute = [
 					{
 						index: true,
 						element: (
-							<ProductsList title={'Mouse'} url={'mouses'} />
+							<ProductsList
+								title={'Mouse'}
+								url={'mouses'}
+								cate={'Mouse'}
+							/>
 						),
 					},
 					{
 						path: 'new',
-						element: <NewProduct title={'Mouse'} url={'mouses'} />,
+						element: (
+							<NewProduct
+								title={'Mouse'}
+								url={'mouses'}
+								cate={'Mouse'}
+							/>
+						),
 					},
 					// {
 					// 	path: 'attributes',
@@ -261,13 +311,18 @@ const AdminRoute = [
 							<ProductsList
 								title={'Keyboard'}
 								url={'keyboards'}
+								cate={'Keyboard'}
 							/>
 						),
 					},
 					{
 						path: 'new',
 						element: (
-							<NewProduct title={'Keyboard'} url={'keyboards'} />
+							<NewProduct
+								title={'Keyboard'}
+								url={'keyboards'}
+								cate={'Keyboard'}
+							/>
 						),
 					},
 					// {

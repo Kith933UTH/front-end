@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { IconButton, Tooltip } from '@material-tailwind/react';
+import { Badge, IconButton, Tooltip } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import {
 	Bars3Icon,
@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 
 const Header = () => {
 	const user = useSelector((state) => state.users);
+
 	//Nav handler
 	const [openNav, setOpenNav] = useState(true);
 	const closeNavMobileSection = useCallback(() => setOpenNav(false), []);
@@ -26,6 +27,8 @@ const Header = () => {
 			}
 		});
 	}, [closeNavMobileSection]);
+
+	const wishlistLength = useSelector((state) => state.wishlist.data.length);
 
 	return (
 		<>
@@ -62,18 +65,38 @@ const Header = () => {
 							<>
 								{/* Wish list  */}
 								<Link to="/wishlist">
-									<Tooltip
-										content="Wishlist"
-										placement="bottom"
-										className="bg-main"
-									>
-										<IconButton
-											variant="text"
-											color="white"
+									{wishlistLength > 0 ? (
+										<Badge
+											content={wishlistLength}
+											className="min-w-5 min-h-5 hover:opacity-80"
 										>
-											<HeartIcon className="h-6 w-6" />
-										</IconButton>
-									</Tooltip>
+											<Tooltip
+												content="Wishlist"
+												placement="bottom"
+												className="bg-main"
+											>
+												<IconButton
+													variant="text"
+													color="white"
+												>
+													<HeartIcon className="h-6 w-6" />
+												</IconButton>
+											</Tooltip>
+										</Badge>
+									) : (
+										<Tooltip
+											content="Wishlist"
+											placement="bottom"
+											className="bg-main"
+										>
+											<IconButton
+												variant="text"
+												color="white"
+											>
+												<HeartIcon className="h-6 w-6" />
+											</IconButton>
+										</Tooltip>
+									)}
 								</Link>
 
 								{/* Cart  */}

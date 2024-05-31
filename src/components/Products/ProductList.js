@@ -7,17 +7,18 @@ import { Typography } from '@material-tailwind/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from './ProductsSlice';
 import { remainProductListSelector } from '../../redux/Selector/ProductSelector';
-import { getData } from '../../api';
-import useSWR from 'swr';
-import SWRconfig from '../../api/SWRconfig';
+// import { getData } from '../../api';
+// import useSWR from 'swr';
+// import SWRconfig from '../../api/SWRconfig';
 
 const perPage = 12;
 
-const ProductList = ({ type }) => {
+const ProductList = ({ cate }) => {
+	// const user = useSelector((state) => state.users);
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(fetchProducts(type));
-	}, [dispatch, type]);
+		dispatch(fetchProducts(cate));
+	}, [dispatch, cate]);
 	const productList = useSelector(remainProductListSelector);
 	const isLogin = useSelector((state) => state.users.accessToken);
 
@@ -40,22 +41,22 @@ const ProductList = ({ type }) => {
 		ScrollToTop();
 	}, [active]);
 
-	const user = useSelector((state) => state.users);
+	// const wishlistFetcher = (url) =>
+	// 	getData(url, {
+	// 		headers: { Authorization: 'Bearer ' + user.accessToken },
+	// 	});
+	// const { data: wishListData, mutate } = useSWR(
+	// 	'/favoriteProducts',
+	// 	wishlistFetcher,
+	// 	SWRconfig
+	// );
 
-	const wishlistFetcher = (url) =>
-		getData(url, {
-			headers: { Authorization: 'Bearer ' + user.accessToken },
-		});
-	const { data: wishListData, mutate } = useSWR(
-		'/users/' + user.userInfo.id + '/favoriteProducts',
-		wishlistFetcher,
-		SWRconfig
-	);
+	const wishListData = useSelector((state) => state.wishlist);
 
 	return (
 		<>
 			<div className="w-full mb-16 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 desktop:grid-cols-4">
-				{productList.isLoading ? (
+				{productList.isLoading || wishListData.isLoading ? (
 					<>
 						<ProductCardSkeleton />
 						<ProductCardSkeleton />
@@ -66,9 +67,7 @@ const ProductList = ({ type }) => {
 						<ProductCardSkeleton />
 						<ProductCardSkeleton />
 					</>
-				) : !productList.isError &&
-				  productList.data.length > 0 &&
-				  wishListData ? (
+				) : !productList.isError && productList.data.length > 0 ? (
 					productList.data
 						.map((product, index) =>
 							index < active * perPage &&
@@ -78,18 +77,18 @@ const ProductList = ({ type }) => {
 									data={product}
 									isLogin={isLogin !== ''}
 									isInWishList={
-										wishListData.filter(
+										wishListData.data.filter(
 											(item) =>
 												item.product._id === product._id
 										).length > 0
-											? wishListData.filter(
+											? wishListData.data.filter(
 													(item) =>
 														item.product._id ===
 														product._id
 											  )
 											: false
 									}
-									mutate={mutate}
+									// mutate={mutate}
 								/>
 							) : null
 						)

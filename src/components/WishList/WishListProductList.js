@@ -1,39 +1,43 @@
 import React, { useEffect } from 'react';
 import { Pagination } from '../Pagination/Pagination.js';
-import { ProductCardSkeleton } from './ProductCard/ProductCardSkeleton.js';
+import { ProductCardSkeleton } from '../Products/ProductCard/ProductCardSkeleton.js';
 import { ScrollToTop } from '../../utils/index.js';
 import { Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
-
-import useSWR from 'swr';
-import SWRconfig from '../../api/SWRconfig.js';
-import { getData } from '../../api/index.js';
 import { useSelector } from 'react-redux';
-import { WishListProductCard } from './ProductCard/WishListProductCard.js';
+import { WishListProductCard } from './WishListProductCard.js';
 
 const perPage = 10;
 
 const WishListProductList = () => {
-	const user = useSelector((state) => state.users);
+	// const user = useSelector((state) => state.users);
+	// const wishlistFetcher = (url) =>
+	// 	getData(url, {
+	// 		headers: { Authorization: 'Bearer ' + user.accessToken },
+	// 	});
+	// const {
+	// 	data: wishListData,
+	// 	error: wishListError,
+	// 	isLoading: wishListLoading,
+	// 	mutate,
+	// } = useSWR('/favoriteProducts', wishlistFetcher);
 
-	const wishlistFetcher = (url) =>
-		getData(url, {
-			headers: { Authorization: 'Bearer ' + user.accessToken },
-		});
-	const {
-		data: wishListData,
-		error: wishListError,
-		isLoading: wishListLoading,
-		mutate,
-	} = useSWR(
-		'/users/' + user.userInfo.id + '/favoriteProducts',
-		wishlistFetcher,
-		SWRconfig
-	);
+	// console.log(wishListData);
+
+	// const dispatch = useDispatch();
+	// useEffect(() => {
+	// 	if (user.accessToken !== '') {
+	// 		dispatch(fetchWishList({ token: user.accessToken }));
+	// 	}
+	// }, [dispatch, user]);
+	// const data = useSelector((state) => state.wishlist);
+	// console.log(data);
+
+	const wishListData = useSelector((state) => state.wishlist);
 
 	//handle pagination
 	const [active, setActive] = React.useState(1);
-	const lengthOfPage = Math.ceil(wishListData?.length / perPage);
+	const lengthOfPage = Math.ceil(wishListData.data.length / perPage);
 	const next = () => {
 		if (active === lengthOfPage) return;
 		setActive(active + 1);
@@ -50,7 +54,7 @@ const WishListProductList = () => {
 
 	return (
 		<>
-			{wishListLoading && (
+			{(wishListData.isLoading || wishListData.isError) && (
 				<div className="w-full mb-16 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 desktop:grid-cols-5">
 					<ProductCardSkeleton />
 					<ProductCardSkeleton />
@@ -65,25 +69,25 @@ const WishListProductList = () => {
 				</div>
 			)}
 
-			{!wishListError &&
-				(wishListData?.length > 0 ? (
+			{!wishListData.isError &&
+				(wishListData.data.length > 0 ? (
 					<>
 						<Typography className="text-text text-2xl font-medium my-4">
 							You have{' '}
 							<span className="text-highlight font-semibold">
-								{wishListData.length}
+								{wishListData.data.length}
 							</span>{' '}
 							products in your wish list.
 						</Typography>
 						<div className="w-full mb-16 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 desktop:grid-cols-5">
-							{wishListData
+							{wishListData.data
 								.map((product, index) =>
 									index < active * perPage &&
 									index >= (active - 1) * perPage ? (
 										<WishListProductCard
 											key={product._id}
 											data={product}
-											mutate={mutate}
+											// mutate={mutate}
 										/>
 									) : null
 								)

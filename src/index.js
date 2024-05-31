@@ -7,9 +7,20 @@ import './index.css';
 import { ThemeProvider } from '@material-tailwind/react';
 import { refreshToken } from './components/Users/UsersSlice';
 import Cookies from 'universal-cookie';
+// import useFetchData from './hooks/useFetchData';
 const cookies = new Cookies();
 
 const dispatch = store.dispatch;
+
+// const Wrapper = () => {
+// 	if (cookies.get('jwt')) {
+// 		dispatch(refreshToken());
+// 		// const { data, error, isLoading } = useFetchData('auth/refresh');
+// 		return <App />;
+// 	} else {
+// 		return <App />;
+// 	}
+// };
 
 if (cookies.get('jwt')) {
 	dispatch(refreshToken());

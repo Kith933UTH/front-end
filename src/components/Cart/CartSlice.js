@@ -59,7 +59,7 @@ const cartSlice = createSlice({
 });
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (user) => {
-	const data = await getData('users/' + user.id + '/cart', {
+	const data = await getData('/cart', {
 		headers: { Authorization: 'Bearer ' + user.token },
 	});
 	return data;
@@ -67,13 +67,13 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async (user) => {
 
 export const addToCart = createAsyncThunk('cart/addToCart', async (user) => {
 	await postData(
-		'users/' + user.id + '/cart',
-		{ productVariantId: user.product._id, quantity: 1 },
+		'/cart',
+		{ productId: user.product._id, quantity: 1 },
 		{
 			headers: { Authorization: 'Bearer ' + user.token },
 		}
 	);
-	const data = await getData('users/' + user.id + '/cart', {
+	const data = await getData('/cart', {
 		headers: { Authorization: 'Bearer ' + user.token },
 	});
 	return data;
@@ -82,10 +82,10 @@ export const addToCart = createAsyncThunk('cart/addToCart', async (user) => {
 export const removeFromCart = createAsyncThunk(
 	'cart/removeFromCart',
 	async (data) => {
-		await deleteData('users/' + data.id + '/cart/' + data.idRemove, {
+		await deleteData('/cart/' + data.idRemove, {
 			headers: { Authorization: 'Bearer ' + data.token },
 		});
-		const newData = await getData('users/' + data.id + '/cart', {
+		const newData = await getData('/cart', {
 			headers: { Authorization: 'Bearer ' + data.token },
 		});
 		return newData;
@@ -96,13 +96,13 @@ export const increaseQuantity = createAsyncThunk(
 	'cart/increaseQuantity',
 	async (data) => {
 		await updateData(
-			'users/' + data.id + '/cart/' + data.idUpdate,
+			'/cart/' + data.idUpdate,
 			{ quantity: data.quantity },
 			{
 				headers: { Authorization: 'Bearer ' + data.token },
 			}
 		);
-		const newData = await getData('users/' + data.id + '/cart', {
+		const newData = await getData('/cart', {
 			headers: { Authorization: 'Bearer ' + data.token },
 		});
 		return newData;
@@ -113,13 +113,13 @@ export const decreaseQuantity = createAsyncThunk(
 	'cart/decreaseQuantity',
 	async (data) => {
 		await updateData(
-			'users/' + data.id + '/cart/' + data.idUpdate,
+			'/cart/' + data.idUpdate,
 			{ quantity: data.quantity },
 			{
 				headers: { Authorization: 'Bearer ' + data.token },
 			}
 		);
-		const newData = await getData('users/' + data.id + '/cart', {
+		const newData = await getData('/cart', {
 			headers: { Authorization: 'Bearer ' + data.token },
 		});
 		return newData;
@@ -129,10 +129,10 @@ export const decreaseQuantity = createAsyncThunk(
 export const removeEntireCart = createAsyncThunk(
 	'cart/removeEntireCart',
 	async (data) => {
-		await deleteData('users/' + data.id + '/cart/all', {
+		await deleteData('/cart/all', {
 			headers: { Authorization: 'Bearer ' + data.token },
 		});
-		const newData = await getData('users/' + data.id + '/cart', {
+		const newData = await getData('/cart', {
 			headers: { Authorization: 'Bearer ' + data.token },
 		});
 		return newData;

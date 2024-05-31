@@ -184,7 +184,10 @@ const OrderDetail = () => {
 										<div className="flex justify-between flex-1 gap-4">
 											<Typography className="inline-block text-text text-base">
 												<span className="block font-medium mb-2">
-													{`${item.product.name} (
+													{`${
+														item.product.product
+															.name
+													} (
 								${item.product?.ram ? item.product.ram + ',' : ''}  
 								${item.product?.rom ? item.product.rom + ',' : ''} 
 								${item.product?.hardDrive ? item.product.hardDrive + ',' : ''}

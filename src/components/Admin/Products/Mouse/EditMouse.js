@@ -44,7 +44,7 @@ const GeneralData = ({ data, productId, mutate }) => {
 		e.preventDefault();
 		setLoading(true);
 		updateData(
-			'products/mouses/' + productId,
+			'products/' + productId,
 			{ name: inputValue.name, brand: inputValue.brand },
 			{
 				headers: {
@@ -184,7 +184,7 @@ const DetailData = ({ data, productId, mutate }) => {
 		setLoading(true);
 		if (!data) {
 			postData(
-				'products/mouses/' + productId + '/details',
+				'products/' + productId + '/details',
 				{
 					guaranteePeriod: 10,
 					includedAccessories: [
@@ -220,7 +220,7 @@ const DetailData = ({ data, productId, mutate }) => {
 				.finally(() => setLoading(false));
 		} else {
 			updateData(
-				'products/mouses/' + productId + '/details/' + data._id,
+				'products/' + productId + '/details/' + data._id,
 				{
 					guaranteePeriod: 10,
 					includedAccessories: [
@@ -298,11 +298,13 @@ const VariantItem = ({ data, productId, mutate }) => {
 	const dispatch = useDispatch();
 	const token = useSelector((state) => state.users.accessToken);
 	const [inputValue, setInputValue] = useState({
+		color: data.color,
 		price: data.price,
 		discount: {
 			discountPercentage: data.discount.discountPercentage,
 			discountEndDate: data.discount.discountEndDate,
 		},
+		quantity: data.quantity,
 		status: data.status,
 		image: null,
 	});
@@ -331,6 +333,7 @@ const VariantItem = ({ data, productId, mutate }) => {
 		e.preventDefault();
 		setUpdateLoading(true);
 		const formData = new FormData();
+		formData.append('color', inputValue.color);
 		formData.append('price', inputValue.price);
 		if (inputValue.discount.discountPercentage === 0) {
 			formData.append(
@@ -340,12 +343,12 @@ const VariantItem = ({ data, productId, mutate }) => {
 		} else {
 			formData.append('discount', JSON.stringify(inputValue.discount));
 		}
-
+		formData.append('quantity', inputValue.quantity);
 		formData.append('status', inputValue.status);
 		formData.append('image', inputValue.image);
 
 		patchFormData(
-			'products/mouses/' + productId + '/variants/' + data._id,
+			'products/' + productId + '/variants/' + data._id,
 			formData,
 			{
 				headers: {
@@ -377,7 +380,7 @@ const VariantItem = ({ data, productId, mutate }) => {
 	const handleDeleteVariant = (e) => {
 		e.preventDefault();
 		setDeleteLoading(true);
-		deleteData('products/mouses/' + productId + '/variants/' + data._id, {
+		deleteData('products/' + productId + '/variants/' + data._id, {
 			headers: { Authorization: 'Bearer ' + token },
 		})
 			.then((res) => {
@@ -463,10 +466,17 @@ const VariantItem = ({ data, productId, mutate }) => {
 					<input
 						type="text"
 						placeholder="Color"
-						value={data?.color}
-						disabled
+						value={inputValue.color}
 						spellCheck="false"
-						className="cursor-not-allowed h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
+						onChange={(e) =>
+							setInputValue({
+								...inputValue,
+								color: e.target.value,
+							})
+						}
+						className={` ${
+							inputValue.color === '' ? '!border-red-600' : ''
+						} h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin`}
 					></input>
 				</div>
 
@@ -535,10 +545,9 @@ const VariantItem = ({ data, productId, mutate }) => {
 						type="number"
 						min={1}
 						placeholder="Quantity"
-						value={data?.quantity}
-						disabled
+						value={inputValue.quantity}
 						spellCheck="false"
-						className="cursor-not-allowed h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
+						className="h-min font-sans transition-all text-sm font-medium leading-4 outline-none shadow-none bg-transparent py-2 px-3 text-main placeholder:text-gray-600 placeholder:font-normal border-[1px] border-solid border-gray-300 rounded-md focus:border-admin"
 					></input>
 				</div>
 				{/* active */}
@@ -651,7 +660,7 @@ const AddVariant = ({ productId, mutate }) => {
 		formData.append('quantity', inputValue.quantity);
 		formData.append('image', inputValue.image);
 
-		postFormData('products/mouses/' + productId + '/variants/', formData, {
+		postFormData('products/' + productId + '/variants/', formData, {
 			headers: {
 				Authorization: 'Bearer ' + token,
 				'Content-Type': 'multipart/form-data;',
@@ -917,7 +926,7 @@ const HighLightImages = ({ data, productId, detailId, mutate }) => {
 			});
 
 			patchFormData(
-				'products/mouses/' +
+				'products/' +
 					productId +
 					'/details/' +
 					detailId +
@@ -955,7 +964,7 @@ const HighLightImages = ({ data, productId, detailId, mutate }) => {
 			});
 
 			postFormData(
-				'products/mouses/' +
+				'products/' +
 					productId +
 					'/details/' +
 					detailId +
@@ -1091,19 +1100,19 @@ const EditMouse = () => {
 	const navigate = useNavigate();
 
 	const { data, mutate } = useSWR(
-		'products/mouses/' + productId,
+		'products/' + productId,
 		getData,
 		SWRconfig
 	);
 
 	const { data: variantList, mutate: mutateVariantList } = useSWR(
-		'products/mouses/' + productId + '/variants',
+		'products/' + productId + '/variants',
 		getData,
 		SWRconfig
 	);
 
 	const { data: detailInfo, mutate: mutateDetailData } = useSWR(
-		'products/mouses/' + productId + '/details',
+		'products/' + productId + '/details',
 		getData,
 		SWRconfig
 	);
