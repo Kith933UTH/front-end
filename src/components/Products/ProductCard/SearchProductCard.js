@@ -14,7 +14,6 @@ import { getData } from '../../../api';
 import SWRconfig from '../../../api/SWRconfig';
 
 export function SearchProductCard({ data }) {
-	console.log(data);
 	const path =
 		data.category === 'Laptop'
 			? 'laptops'

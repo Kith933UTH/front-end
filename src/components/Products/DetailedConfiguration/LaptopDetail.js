@@ -55,10 +55,10 @@ const LaptopDetail = ({ detailList, subData }) => {
 					/>
 				)}
 
-				{/* otherInformation */}
-				{detailList.otherInformation && (
+				{/* additionalInformation */}
+				{detailList.additionalInformation && (
 					<DetailItem
-						list={detailList.otherInformation}
+						list={detailList.additionalInformation}
 						title={'Other information'}
 					/>
 				)}

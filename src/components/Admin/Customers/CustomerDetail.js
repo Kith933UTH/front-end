@@ -32,7 +32,6 @@ const CustomerDetail = () => {
 		error: orderListError,
 		isLoading: orderListLoading,
 	} = useSWR('/orders?userId=' + customerId, userFetcher, SWRconfig);
-	console.log(orderList);
 
 	return (
 		<AdminWideLayout>

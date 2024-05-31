@@ -56,7 +56,7 @@ const ProductList = ({ cate }) => {
 	return (
 		<>
 			<div className="w-full mb-16 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 desktop:grid-cols-4">
-				{productList.isLoading || wishListData.isLoading ? (
+				{productList.isLoading ? (
 					<>
 						<ProductCardSkeleton />
 						<ProductCardSkeleton />

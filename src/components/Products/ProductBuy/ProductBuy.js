@@ -70,7 +70,7 @@ const ProductBuy = ({ data }) => {
 					data.variants.filter(
 						(item) =>
 							item.ram === prev.ram &&
-							item.color === prev.color &&
+							// item.color === prev.color &&
 							item.hardDrive === value &&
 							item.status
 					)[0]
@@ -81,7 +81,7 @@ const ProductBuy = ({ data }) => {
 					data.variants.filter(
 						(item) =>
 							item.ram === prev.ram &&
-							item.color === prev.color &&
+							// item.color === prev.color &&
 							item.rom === value &&
 							item.status
 					)[0]
